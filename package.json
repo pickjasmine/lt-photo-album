@@ -1,0 +1,13 @@
+{
+  "name": "lt-photo-album",
+  "version": "1.0.0",
+  "description": "technical showcase for lean techniques",
+  "main": "index.js",
+  "repository": "git@github.com:pickjasmine/lt-photo-album.git",
+  "author": "Jasmine Francois <francois.jasminem@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.0",
+    "readline": "^1.3.0"
+  }
+}
