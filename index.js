@@ -1,25 +1,33 @@
-const readline = require('readline');
-const fetch = require('node-fetch');
+const nodeReadline = require('readline');
+
+const {getPhotosByAlbumId} = require('./fetch-service');
+
+const formatPhotoIdsAndTitlesForPrint = (photos) => photos.map((photo) => `[${photo.id}] ${photo.title}`).join('\n');
 
 const start = () => {
-    const rl = readline.createInterface({
+    const readline = nodeReadline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
 
-    rl.question('Which photo album would you like to view? ', async (answer) => {
-        const response = await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${answer}`);
+    readline.question('Which photo album would you like to view? ', async (albumId) => {
+        const photos = await getPhotosByAlbumId(albumId);
 
-        const parsedResponse = await response.json();
+        if (!photos.length) {
+            readline.write(`\nThere were no photos found for the album: ${albumId}`);
+        } else {
+            const photoIdAndTitles = formatPhotoIdsAndTitlesForPrint(photos);
 
-        const photoIdAndTitles = parsedResponse.map((photo) => `[${photo.id}] ${photo.title} \n`).join('');
+            readline.write(`\nDisplaying photos from album ${albumId}`);
 
-        console.log(`Display Photo Album ${answer}`);
+            readline.write(`\n${photoIdAndTitles.toString()}\n`);
 
-        console.log(photoIdAndTitles.toString());
+            readline.write('\nGoodbye!');
+        }
 
-        rl.close();
+        readline.close();
     });
+
 };
 
 start();
